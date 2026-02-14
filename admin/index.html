@@ -3,154 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internal Access - Node 7</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Ultra-Optimized Experience</title>
     <style>
-        .data-row:hover { background-color: rgba(59, 130, 246, 0.1); border-left: 2px solid #3b82f6; }
-        .hidden-row { display: none; }
-        .terminal-text { font-family: 'Consolas', 'Monaco', monospace; }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; }
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Optimized Canvas Background */
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            filter: blur(1px);
+        }
+
+        /* Smooth Scroll Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg) 70%);
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -2px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* Glassmorphism Cards */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: scale(1.05) translateY(-10px);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer::after {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            transform: rotate(45deg);
+            animation: reflect 3s infinite;
+        }
+
+        @keyframes reflect {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
     </style>
 </head>
-<body class="bg-[#05070a] text-slate-400 terminal-text text-xs selection:bg-blue-500/30">
+<body>
 
-    <div class="flex h-screen flex-col">
-        <div class="bg-[#0f1117] border-b border-white/5 p-4 flex justify-between items-center px-10">
-            <div class="flex items-center gap-6">
-                <h1 class="text-blue-500 font-bold tracking-tighter text-lg">DATALEAK_v2.0.1</h1>
-                <div class="flex gap-2 items-center">
-                    <span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
-                    <span class="text-red-500 text-[10px]">LIVE CONNECTION</span>
-                </div>
-            </div>
-            <div class="text-slate-600">ENCRYPTION: <span class="text-slate-400">AES-256-GCM</span></div>
-        </div>
+    <canvas id="canvas"></canvas>
 
-        <div class="flex-1 flex overflow-hidden">
-            <main class="flex-1 p-8 overflow-y-auto">
-                <div class="max-w-5xl mx-auto">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-white text-xl font-bold">Infiltrated Accounts</h2>
-                        <button onclick="revealNextBatch()" id="revealBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                            NEXT PAGE
-                        </button>
-                    </div>
+    <section class="hero">
+        <h1 class="shimmer">VELOCITY</h1>
+        <p style="color: #888; letter-spacing: 5px; margin-top: 10px;">ULTRA-FLUID PERFORMANCE</p>
+    </section>
 
-                    <div class="bg-[#0f1117] border border-white/10 rounded overflow-hidden">
-                        <table class="w-full text-left">
-                            <thead class="bg-white/5 text-slate-500 uppercase text-[10px]">
-                                <tr>
-                                    <th class="p-4">Staff Member</th>
-                                    <th class="p-4">Relay Email (mail.gw)</th>
-                                    <th class="p-4">Department</th>
-                                    <th class="p-4 text-right">Access Key</th>
-                                </tr>
-                            </thead>
-                            <tbody id="dataTable">
-                                </tbody>
-                        </table>
-                        <div id="loading" class="p-20 text-center">
-                            <div class="inline-block animate-spin border-2 border-blue-500 border-t-transparent w-8 h-8 rounded-full mb-2"></div>
-                            <p class="animate-pulse">Accessing Remote Server...</p>
-                        </div>
-                    </div>
-                </div>
-            </main>
-
-            <aside class="w-80 bg-black border-l border-white/5 p-4 flex flex-col">
-                <h3 class="text-white font-bold mb-4 border-b border-white/10 pb-2">SYSTEM CONSOLE</h3>
-                <div id="consoleBody" class="flex-1 overflow-y-auto space-y-1 text-[10px] leading-tight">
-                    </div>
-            </aside>
+    <div class="container">
+        <div class="grid">
+            <div class="card"><h3>Zero Lag</h3><p>Using GPU-accelerated CSS for buttery smooth 60FPS motion.</p></div>
+            <div class="card"><h3>Glassmorphism</h3><p>Modern frosted-glass aesthetics with real-time backdrop filtering.</p></div>
+            <div class="card"><h3>Responsive</h3><p>Dynamic particle counts that scale based on your device power.</p></div>
         </div>
     </div>
 
     <script>
-        const API_URL = 'https://api.mail.gw';
-        const firstNames = ["James", "Sarah", "Robert", "Emily", "Michael", "Linda", "David", "Jessica", "Thomas", "Karen", "Mark", "Chloe"];
-        const lastNames = ["Miller", "Wilson", "Anderson", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "White", "Harris", "Clark"];
-        const depts = ["Internal-Sec", "Finance", "DevOps", "HR-Database", "Legal-Review"];
+        // --- High Performance Particle System ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-        async function init() {
-            logToConsole("Initializing secure tunnel...");
-            try {
-                const domRes = await fetch(`${API_URL}/domains`);
-                const domData = await domRes.json();
-                const domain = domData['hydra:member'][0].domain;
-                logToConsole(`Target domain identified: ${domain}`);
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-                // Generate 40 users total (Initial 10 visible, others hidden)
-                for (let i = 0; i < 40; i++) {
-                    const fName = firstNames[Math.floor(Math.random() * firstNames.length)];
-                    const lName = lastNames[Math.floor(Math.random() * lastNames.length)];
-                    const dept = depts[Math.floor(Math.random() * depts.length)];
-                    const email = `${fName[0].toLowerCase()}.${lName.toLowerCase()}${Math.floor(Math.random()*999)}@${domain}`;
-                    
-                    // Register them
-                    await fetch(`${API_URL}/accounts`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ address: email, password: "SecretPassword123!" })
-                    });
+        window.addEventListener('resize', resize);
+        resize();
 
-                    addTableRow(`${fName} ${lName}`, email, dept, i >= 10);
-                    if (i % 5 === 0) logToConsole(`Extracted packet [${i+1}/40]...`);
-                }
-                document.getElementById('loading').classList.add('hidden');
-                logToConsole("Infiltration complete. Records ready.");
-            } catch (e) {
-                logToConsole("ERROR: API rate limit reached. Retrying tunnel...", "text-red-500");
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.life = Math.random() * 0.5 + 0.3;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 242, 254, ${this.life})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
-        function addTableRow(name, email, dept, isHidden) {
-            const table = document.getElementById('dataTable');
-            const row = document.createElement('tr');
-            row.className = `data-row border-b border-white/5 ${isHidden ? 'hidden-row' : ''}`;
-            row.innerHTML = `
-                <td class="p-4 text-white font-medium">${name}</td>
-                <td class="p-4 text-blue-400 font-mono">${email}</td>
-                <td class="p-4"><span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded text-slate-500">${dept}</span></td>
-                <td class="p-4 text-right"><button class="text-emerald-500 text-[9px] border border-emerald-500/30 px-2 py-1 rounded">DECRYPTED</button></td>
-            `;
-            table.appendChild(row);
+        // Particle count based on screen size (Optimization)
+        const count = window.innerWidth < 768 ? 40 : 100;
+        for (let i = 0; i < count; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
         }
+        animate();
 
-        function revealNextBatch() {
-            const btn = document.getElementById('revealBtn');
-            const hidden = Array.from(document.querySelectorAll('.hidden-row'));
-            
-            if (hidden.length === 0) {
-                logToConsole("No more records in current buffer.", "text-orange-500");
-                return;
-            }
-
-            btn.innerText = "BYPASSING...";
-            btn.disabled = true;
-            logToConsole("Requesting next data page from Node 7...");
-
-            setTimeout(() => {
-                for(let i = 0; i < 10 && i < hidden.length; i++) {
-                    hidden[i].classList.remove('hidden-row');
-                    hidden[i].classList.add('bg-blue-500/10');
+        // --- Intersection Observer for Scroll Animations ---
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
                 }
-                btn.innerText = "NEXT PAGE";
-                btn.disabled = false;
-                logToConsole(`Success: 10 records injected into view.`);
-            }, 800);
-        }
+            });
+        }, observerOptions);
 
-        function logToConsole(msg, colorClass = "text-slate-500") {
-            const consoleBody = document.getElementById('consoleBody');
-            const entry = document.createElement('div');
-            entry.className = colorClass;
-            entry.innerHTML = `> [${new Date().toLocaleTimeString()}] ${msg}`;
-            consoleBody.appendChild(entry);
-            consoleBody.scrollTop = consoleBody.scrollHeight;
-        }
-
-        init();
+        document.querySelectorAll('.card').forEach(card => observer.observe(card));
     </script>
 </body>
 </html>
