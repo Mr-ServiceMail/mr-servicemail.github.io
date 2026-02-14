@@ -3,150 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internal Admin | User Access Logs</title>
+    <title>Internal Access - Node 7</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .data-row:hover { background-color: rgba(30, 41, 59, 0.5); border-left: 2px solid #3b82f6; transition: all 0.2s; }
+        .data-row:hover { background-color: rgba(59, 130, 246, 0.1); border-left: 2px solid #3b82f6; }
         .hidden-row { display: none; }
-        .terminal-text { font-family: 'Courier New', Courier, monospace; }
+        .terminal-text { font-family: 'Consolas', 'Monaco', monospace; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; }
     </style>
 </head>
-<body class="bg-[#0b0e14] text-slate-300 terminal-text text-sm">
+<body class="bg-[#05070a] text-slate-400 terminal-text text-xs selection:bg-blue-500/30">
 
-    <div class="bg-[#161b22] border-b border-slate-800 p-3 flex justify-between items-center px-8">
-        <div class="flex items-center space-x-4">
-            <span class="text-emerald-500 flex items-center gap-2">
-                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                SYSTEM ONLINE
-            </span>
-            <span class="text-slate-600">|</span>
-            <span class="text-slate-500">SERVER: US-EAST-NODE-04</span>
-        </div>
-        <div class="text-slate-500">
-            SECURE SESSION: <span id="session-timer">00:59:42</span>
-        </div>
-    </div>
-
-    <div class="p-10 max-w-6xl mx-auto">
-        <header class="mb-10 flex justify-between items-end">
-            <div>
-                <h1 class="text-2xl font-bold text-white mb-2">Employee Directory (Legacy System)</h1>
-                <p class="text-slate-500 italic text-xs">Note: All accounts listed are active on temporary QA domains (Mail.gw protocol).</p>
+    <div class="flex h-screen flex-col">
+        <div class="bg-[#0f1117] border-b border-white/5 p-4 flex justify-between items-center px-10">
+            <div class="flex items-center gap-6">
+                <h1 class="text-blue-500 font-bold tracking-tighter text-lg">DATALEAK_v2.0.1</h1>
+                <div class="flex gap-2 items-center">
+                    <span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+                    <span class="text-red-500 text-[10px]">LIVE CONNECTION</span>
+                </div>
             </div>
-            <button onclick="revealData()" id="revealBtn" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-3 rounded shadow-[0_0_15px_rgba(37,99,235,0.4)] font-bold transition-all active:transform active:scale-95">
-                ACCESS NEXT 10 RECORDS
-            </button>
-        </header>
-
-        <div class="grid grid-cols-4 gap-4 mb-8">
-            <div class="bg-[#161b22] p-4 border border-slate-800 rounded">
-                <p class="text-[10px] text-slate-500 uppercase">Total Records</p>
-                <p class="text-xl font-bold text-white">4,821</p>
-            </div>
-            <div class="bg-[#161b22] p-4 border border-slate-800 rounded">
-                <p class="text-[10px] text-slate-500 uppercase">Privileged Users</p>
-                <p class="text-xl font-bold text-orange-400">142</p>
-            </div>
-            <div class="bg-[#161b22] p-4 border border-slate-800 rounded">
-                <p class="text-[10px] text-slate-500 uppercase">Unmasked PII</p>
-                <p class="text-xl font-bold text-red-500 underline">ENABLED</p>
-            </div>
-            <div class="bg-[#161b22] p-4 border border-slate-800 rounded">
-                <p class="text-[10px] text-slate-500 uppercase">Sync Status</p>
-                <p class="text-xl font-bold text-emerald-500">100%</p>
-            </div>
+            <div class="text-slate-600">ENCRYPTION: <span class="text-slate-400">AES-256-GCM</span></div>
         </div>
 
-        <div class="bg-[#161b22] border border-slate-800 rounded-lg overflow-hidden shadow-2xl">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="bg-slate-900/50 border-b border-slate-800 text-slate-500 text-[11px] uppercase tracking-wider">
-                        <th class="p-4">Full Name</th>
-                        <th class="p-4">Corporate Email</th>
-                        <th class="p-4">Department</th>
-                        <th class="p-4">Last Login IP</th>
-                        <th class="p-4 text-right">Access</th>
-                    </tr>
-                </thead>
-                <tbody id="dataTable">
-                    </tbody>
-            </table>
-            
-            <div id="loading" class="p-20 text-center">
-                <div class="inline-block animate-spin border-2 border-blue-500 border-t-transparent w-8 h-8 rounded-full mb-4"></div>
-                <p class="text-slate-500 animate-pulse">Querying Encrypted Volume...</p>
-            </div>
+        <div class="flex-1 flex overflow-hidden">
+            <main class="flex-1 p-8 overflow-y-auto">
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-white text-xl font-bold">Infiltrated Accounts</h2>
+                        <button onclick="revealNextBatch()" id="revealBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                            NEXT PAGE
+                        </button>
+                    </div>
+
+                    <div class="bg-[#0f1117] border border-white/10 rounded overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-white/5 text-slate-500 uppercase text-[10px]">
+                                <tr>
+                                    <th class="p-4">Staff Member</th>
+                                    <th class="p-4">Relay Email (mail.gw)</th>
+                                    <th class="p-4">Department</th>
+                                    <th class="p-4 text-right">Access Key</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataTable">
+                                </tbody>
+                        </table>
+                        <div id="loading" class="p-20 text-center">
+                            <div class="inline-block animate-spin border-2 border-blue-500 border-t-transparent w-8 h-8 rounded-full mb-2"></div>
+                            <p class="animate-pulse">Accessing Remote Server...</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="w-80 bg-black border-l border-white/5 p-4 flex flex-col">
+                <h3 class="text-white font-bold mb-4 border-b border-white/10 pb-2">SYSTEM CONSOLE</h3>
+                <div id="consoleBody" class="flex-1 overflow-y-auto space-y-1 text-[10px] leading-tight">
+                    </div>
+            </aside>
         </div>
     </div>
 
     <script>
         const API_URL = 'https://api.mail.gw';
-        const firstNames = ["James", "Sarah", "Robert", "Emily", "Michael", "Linda", "David", "Jessica", "Thomas", "Karen", "Kevin", "Ashley"];
-        const lastNames = ["Miller", "Wilson", "Anderson", "Taylor", "Thomas", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White"];
-        const depts = ["Engineering", "FinOps", "DevOps", "HR-Core", "Legal", "Global-Sales", "Product"];
+        const firstNames = ["James", "Sarah", "Robert", "Emily", "Michael", "Linda", "David", "Jessica", "Thomas", "Karen", "Mark", "Chloe"];
+        const lastNames = ["Miller", "Wilson", "Anderson", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Perez", "White", "Harris", "Clark"];
+        const depts = ["Internal-Sec", "Finance", "DevOps", "HR-Database", "Legal-Review"];
 
         async function init() {
+            logToConsole("Initializing secure tunnel...");
             try {
                 const domRes = await fetch(`${API_URL}/domains`);
                 const domData = await domRes.json();
                 const domain = domData['hydra:member'][0].domain;
+                logToConsole(`Target domain identified: ${domain}`);
 
-                // Pre-generate 30 users (some hidden)
-                for (let i = 0; i < 30; i++) {
+                // Generate 40 users total (Initial 10 visible, others hidden)
+                for (let i = 0; i < 40; i++) {
                     const fName = firstNames[Math.floor(Math.random() * firstNames.length)];
                     const lName = lastNames[Math.floor(Math.random() * lastNames.length)];
                     const dept = depts[Math.floor(Math.random() * depts.length)];
+                    const email = `${fName[0].toLowerCase()}.${lName.toLowerCase()}${Math.floor(Math.random()*999)}@${domain}`;
                     
-                    // Believable email format
-                    const emailPrefix = `${fName[0].toLowerCase()}.${lName.toLowerCase()}${Math.floor(Math.random()*99)}`;
-                    const email = `${emailPrefix}@${domain}`;
-                    const ip = `192.168.${Math.floor(Math.random()*254)}.${Math.floor(Math.random()*254)}`;
-                    
-                    // Create actual account
+                    // Register them
                     await fetch(`${API_URL}/accounts`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ address: email, password: "SecurePassword123!" })
+                        body: JSON.stringify({ address: email, password: "SecretPassword123!" })
                     });
 
-                    addTableRow(fName + " " + lName, email, dept, ip, i >= 10);
+                    addTableRow(`${fName} ${lName}`, email, dept, i >= 10);
+                    if (i % 5 === 0) logToConsole(`Extracted packet [${i+1}/40]...`);
                 }
                 document.getElementById('loading').classList.add('hidden');
+                logToConsole("Infiltration complete. Records ready.");
             } catch (e) {
-                console.error("API Blocked or Offline");
+                logToConsole("ERROR: API rate limit reached. Retrying tunnel...", "text-red-500");
             }
         }
 
-        function addTableRow(name, email, dept, ip, isHidden) {
+        function addTableRow(name, email, dept, isHidden) {
             const table = document.getElementById('dataTable');
             const row = document.createElement('tr');
-            row.className = `data-row border-b border-slate-800/30 ${isHidden ? 'hidden-row' : ''}`;
+            row.className = `data-row border-b border-white/5 ${isHidden ? 'hidden-row' : ''}`;
             row.innerHTML = `
-                <td class="p-4 font-bold text-slate-200">${name}</td>
+                <td class="p-4 text-white font-medium">${name}</td>
                 <td class="p-4 text-blue-400 font-mono">${email}</td>
-                <td class="p-4"><span class="bg-slate-800 px-2 py-1 rounded text-[10px]">${dept}</span></td>
-                <td class="p-4 text-slate-500 text-xs">${ip}</td>
-                <td class="p-4 text-right">
-                    <button class="text-emerald-500 hover:underline text-[10px]">DECRYPT</button>
-                </td>
+                <td class="p-4"><span class="bg-white/5 border border-white/10 px-2 py-0.5 rounded text-slate-500">${dept}</span></td>
+                <td class="p-4 text-right"><button class="text-emerald-500 text-[9px] border border-emerald-500/30 px-2 py-1 rounded">DECRYPTED</button></td>
             `;
             table.appendChild(row);
         }
 
-        function revealData() {
+        function revealNextBatch() {
             const btn = document.getElementById('revealBtn');
-            btn.innerText = "BYPASSING ENCRYPTION...";
+            const hidden = Array.from(document.querySelectorAll('.hidden-row'));
+            
+            if (hidden.length === 0) {
+                logToConsole("No more records in current buffer.", "text-orange-500");
+                return;
+            }
+
+            btn.innerText = "BYPASSING...";
             btn.disabled = true;
+            logToConsole("Requesting next data page from Node 7...");
 
             setTimeout(() => {
-                const hidden = document.querySelectorAll('.hidden-row');
                 for(let i = 0; i < 10 && i < hidden.length; i++) {
                     hidden[i].classList.remove('hidden-row');
-                    hidden[i].classList.add('bg-blue-500/5', 'animate-pulse');
+                    hidden[i].classList.add('bg-blue-500/10');
                 }
-                btn.innerText = "ACCESS NEXT 10 RECORDS";
+                btn.innerText = "NEXT PAGE";
                 btn.disabled = false;
-            }, 1200);
+                logToConsole(`Success: 10 records injected into view.`);
+            }, 800);
+        }
+
+        function logToConsole(msg, colorClass = "text-slate-500") {
+            const consoleBody = document.getElementById('consoleBody');
+            const entry = document.createElement('div');
+            entry.className = colorClass;
+            entry.innerHTML = `> [${new Date().toLocaleTimeString()}] ${msg}`;
+            consoleBody.appendChild(entry);
+            consoleBody.scrollTop = consoleBody.scrollHeight;
         }
 
         init();
