@@ -3,128 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internal DB | User Management v4.2</title>
+    <title>Internal Admin | User Access Logs</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .glow { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .data-row:hover { background-color: rgba(30, 41, 59, 0.5); border-left: 2px solid #3b82f6; transition: all 0.2s; }
         .hidden-row { display: none; }
+        .terminal-text { font-family: 'Courier New', Courier, monospace; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-200 font-mono">
+<body class="bg-[#0b0e14] text-slate-300 terminal-text text-sm">
 
-    <div class="flex h-screen overflow-hidden">
-        <aside class="w-72 bg-slate-900 border-r border-slate-800 p-6 flex flex-col">
-            <div class="mb-10">
-                <h2 class="text-blue-500 font-bold tracking-widest text-xl">SHIELD-CORE</h2>
-                <p class="text-[10px] text-slate-500 uppercase">Secure Database Access</p>
-            </div>
-            <nav class="space-y-4 flex-1">
-                <div class="text-blue-400 bg-blue-900/20 p-3 rounded border border-blue-500/30">Users & Accounts</div>
-                <div class="text-slate-500 p-3 hover:text-slate-300 transition cursor-not-allowed">IP Logs</div>
-                <div class="text-slate-500 p-3 hover:text-slate-300 transition cursor-not-allowed">API Keys</div>
-            </nav>
-            <div class="text-[10px] text-red-500 bg-red-900/10 p-2 border border-red-900/30">
-                WARNING: Unauthorized access is logged.
-            </div>
-        </aside>
+    <div class="bg-[#161b22] border-b border-slate-800 p-3 flex justify-between items-center px-8">
+        <div class="flex items-center space-x-4">
+            <span class="text-emerald-500 flex items-center gap-2">
+                <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                SYSTEM ONLINE
+            </span>
+            <span class="text-slate-600">|</span>
+            <span class="text-slate-500">SERVER: US-EAST-NODE-04</span>
+        </div>
+        <div class="text-slate-500">
+            SECURE SESSION: <span id="session-timer">00:59:42</span>
+        </div>
+    </div>
 
-        <main class="flex-1 p-10 overflow-y-auto">
-            <header class="flex justify-between items-end mb-12">
-                <div>
-                    <h1 class="text-4xl font-bold mb-2">User Directory</h1>
-                    <p class="text-slate-500">Showing active Mail.gw temporary aliases for QA testing.</p>
-                </div>
-                <button id="fetchBtn" onclick="revealMore()" class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded font-bold glow transition-all active:scale-95">
-                    REVEAL 5 MORE USERS
-                </button>
-            </header>
-
-            <div class="bg-slate-900 rounded-lg border border-slate-800 shadow-2xl">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="text-slate-500 border-b border-slate-800">
-                            <th class="p-5 font-medium uppercase text-xs">Internal ID</th>
-                            <th class="p-5 font-medium uppercase text-xs">Email Alias</th>
-                            <th class="p-5 font-medium uppercase text-xs">Created At</th>
-                            <th class="p-5 font-medium uppercase text-xs">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTable">
-                        </tbody>
-                </table>
-                
-                <div id="loadingState" class="p-10 text-center text-slate-500">
-                    <span class="animate-pulse italic">Decrypting database records...</span>
-                </div>
+    <div class="p-10 max-w-6xl mx-auto">
+        <header class="mb-10 flex justify-between items-end">
+            <div>
+                <h1 class="text-2xl font-bold text-white mb-2">Employee Directory (Legacy System)</h1>
+                <p class="text-slate-500 italic text-xs">Note: All accounts listed are active on temporary QA domains (Mail.gw protocol).</p>
             </div>
-        </main>
+            <button onclick="revealData()" id="revealBtn" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-3 rounded shadow-[0_0_15px_rgba(37,99,235,0.4)] font-bold transition-all active:transform active:scale-95">
+                ACCESS NEXT 10 RECORDS
+            </button>
+        </header>
+
+        <div class="grid grid-cols-4 gap-4 mb-8">
+            <div class="bg-[#161b22] p-4 border border-slate-800 rounded">
+                <p class="text-[10px] text-slate-500 uppercase">Total Records</p>
+                <p class="text-xl font-bold text-white">4,821</p>
+            </div>
+            <div class="bg-[#161b22] p-4 border border-slate-800 rounded">
+                <p class="text-[10px] text-slate-500 uppercase">Privileged Users</p>
+                <p class="text-xl font-bold text-orange-400">142</p>
+            </div>
+            <div class="bg-[#161b22] p-4 border border-slate-800 rounded">
+                <p class="text-[10px] text-slate-500 uppercase">Unmasked PII</p>
+                <p class="text-xl font-bold text-red-500 underline">ENABLED</p>
+            </div>
+            <div class="bg-[#161b22] p-4 border border-slate-800 rounded">
+                <p class="text-[10px] text-slate-500 uppercase">Sync Status</p>
+                <p class="text-xl font-bold text-emerald-500">100%</p>
+            </div>
+        </div>
+
+        <div class="bg-[#161b22] border border-slate-800 rounded-lg overflow-hidden shadow-2xl">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-slate-900/50 border-b border-slate-800 text-slate-500 text-[11px] uppercase tracking-wider">
+                        <th class="p-4">Full Name</th>
+                        <th class="p-4">Corporate Email</th>
+                        <th class="p-4">Department</th>
+                        <th class="p-4">Last Login IP</th>
+                        <th class="p-4 text-right">Access</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+                    </tbody>
+            </table>
+            
+            <div id="loading" class="p-20 text-center">
+                <div class="inline-block animate-spin border-2 border-blue-500 border-t-transparent w-8 h-8 rounded-full mb-4"></div>
+                <p class="text-slate-500 animate-pulse">Querying Encrypted Volume...</p>
+            </div>
+        </div>
     </div>
 
     <script>
         const API_URL = 'https://api.mail.gw';
+        const firstNames = ["James", "Sarah", "Robert", "Emily", "Michael", "Linda", "David", "Jessica", "Thomas", "Karen", "Kevin", "Ashley"];
+        const lastNames = ["Miller", "Wilson", "Anderson", "Taylor", "Thomas", "Moore", "Jackson", "Martin", "Lee", "Perez", "Thompson", "White"];
+        const depts = ["Engineering", "FinOps", "DevOps", "HR-Core", "Legal", "Global-Sales", "Product"];
 
-        // Auto-run on load to make it look "real"
-        window.onload = () => {
-            silentFetch(12); // Start with 12 users
-        };
-
-        async function silentFetch(count) {
+        async function init() {
             try {
                 const domRes = await fetch(`${API_URL}/domains`);
                 const domData = await domRes.json();
                 const domain = domData['hydra:member'][0].domain;
 
-                for (let i = 0; i < count; i++) {
-                    const randomStr = Math.random().toString(36).substring(2, 9);
-                    const email = `${randomStr}@${domain}`;
-                    const password = "Pass" + Math.floor(Math.random() * 9999);
-
-                    // Actually register them so the emails ARE real if someone tests them
+                // Pre-generate 30 users (some hidden)
+                for (let i = 0; i < 30; i++) {
+                    const fName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                    const lName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                    const dept = depts[Math.floor(Math.random() * depts.length)];
+                    
+                    // Believable email format
+                    const emailPrefix = `${fName[0].toLowerCase()}.${lName.toLowerCase()}${Math.floor(Math.random()*99)}`;
+                    const email = `${emailPrefix}@${domain}`;
+                    const ip = `192.168.${Math.floor(Math.random()*254)}.${Math.floor(Math.random()*254)}`;
+                    
+                    // Create actual account
                     await fetch(`${API_URL}/accounts`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ address: email, password: password })
+                        body: JSON.stringify({ address: email, password: "SecurePassword123!" })
                     });
 
-                    addRow(email, i < 5 ? '' : 'hidden-row');
+                    addTableRow(fName + " " + lName, email, dept, ip, i >= 10);
                 }
-                document.getElementById('loadingState').classList.add('hidden');
-            } catch (err) {
-                console.error("Connection error");
+                document.getElementById('loading').classList.add('hidden');
+            } catch (e) {
+                console.error("API Blocked or Offline");
             }
         }
 
-        function addRow(email, visibilityClass) {
-            const table = document.getElementById('userTable');
-            const id = "USR-" + Math.floor(Math.random() * 1000000);
-            const date = new Date().toLocaleDateString();
-            
-            const row = `
-                <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 transition ${visibilityClass}">
-                    <td class="p-5 text-blue-400 font-mono text-sm">${id}</td>
-                    <td class="p-5 text-slate-300 font-mono text-sm">${email}</td>
-                    <td class="p-5 text-slate-500 text-sm">${date}</td>
-                    <td class="p-5">
-                        <span class="text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded text-[10px] font-bold">VERIFIED</span>
-                    </td>
-                </tr>
+        function addTableRow(name, email, dept, ip, isHidden) {
+            const table = document.getElementById('dataTable');
+            const row = document.createElement('tr');
+            row.className = `data-row border-b border-slate-800/30 ${isHidden ? 'hidden-row' : ''}`;
+            row.innerHTML = `
+                <td class="p-4 font-bold text-slate-200">${name}</td>
+                <td class="p-4 text-blue-400 font-mono">${email}</td>
+                <td class="p-4"><span class="bg-slate-800 px-2 py-1 rounded text-[10px]">${dept}</span></td>
+                <td class="p-4 text-slate-500 text-xs">${ip}</td>
+                <td class="p-4 text-right">
+                    <button class="text-emerald-500 hover:underline text-[10px]">DECRYPT</button>
+                </td>
             `;
-            table.innerHTML += row;
+            table.appendChild(row);
         }
 
-        function revealMore() {
-            const btn = document.getElementById('fetchBtn');
-            btn.innerText = "ACCESSING...";
-            
+        function revealData() {
+            const btn = document.getElementById('revealBtn');
+            btn.innerText = "BYPASSING ENCRYPTION...";
+            btn.disabled = true;
+
             setTimeout(() => {
-                const hiddenRows = document.querySelectorAll('.hidden-row');
-                for(let i = 0; i < 5 && i < hiddenRows.length; i++) {
-                    hiddenRows[i].classList.remove('hidden-row', 'animate-pulse');
-                    hiddenRows[i].classList.add('bg-blue-900/10');
+                const hidden = document.querySelectorAll('.hidden-row');
+                for(let i = 0; i < 10 && i < hidden.length; i++) {
+                    hidden[i].classList.remove('hidden-row');
+                    hidden[i].classList.add('bg-blue-500/5', 'animate-pulse');
                 }
-                btn.innerText = "REVEAL 5 MORE USERS";
-            }, 800);
+                btn.innerText = "ACCESS NEXT 10 RECORDS";
+                btn.disabled = false;
+            }, 1200);
         }
+
+        init();
     </script>
 </body>
 </html>
