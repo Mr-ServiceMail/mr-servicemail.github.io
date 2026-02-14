@@ -15,9 +15,28 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1e293b; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        /* Modal Animation */
+        .modal-enter { opacity: 0; transform: scale(0.95); }
+        .modal-active { opacity: 1; transform: scale(1); transition: all 0.2s ease-out; }
     </style>
 </head>
 <body class="min-h-screen overflow-x-hidden">
+
+    <!-- Redirect Modal -->
+    <div id="redirect-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-slate-950/80 backdrop-blur-sm">
+        <div class="glass max-w-sm w-full p-8 rounded-3xl shadow-2xl text-center border border-white/10">
+            <div class="w-16 h-16 bg-[#5865F2]/20 text-[#5865F2] rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">
+                <i class="fab fa-discord"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Redirecting to Discord</h3>
+            <p class="text-slate-400 text-sm mb-8 leading-relaxed">You are about to be redirected to our community server to complete your purchase or get support.</p>
+            <div class="flex flex-col gap-3">
+                <a href="https://discord.gg/5ZDX8dp7" target="_blank" onclick="closeModal()" class="w-full py-3 bg-[#5865F2] hover:bg-[#4752c4] rounded-xl font-bold transition">Proceed to Discord</a>
+                <button onclick="closeModal()" class="w-full py-3 text-slate-400 hover:text-white transition text-sm">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 glass py-4 px-6 md:px-12 flex justify-between items-center">
@@ -31,7 +50,7 @@
             <a href="#home" class="hover:text-sky-400 transition">Home</a>
             <a href="#pricing" class="hover:text-sky-400 transition">Pricing</a>
             <a href="#updates" class="hover:text-sky-400 transition">Updates</a>
-            <a href="https://discord.gg/5ZDX8dp7" target="_blank" class="hover:text-sky-400 transition">Discord</a>
+            <button onclick="openModal()" class="hover:text-sky-400 transition">Discord</button>
         </div>
         <button onclick="document.getElementById('pricing').scrollIntoView({behavior: 'smooth'})" class="bg-sky-500 hover:bg-sky-600 px-5 py-2 rounded-full font-semibold transition text-sm">Get Premium</button>
     </nav>
@@ -65,7 +84,6 @@
                     <span id="status-tag" class="text-[10px] bg-emerald-500/10 text-emerald-500 px-2 py-1 rounded-full uppercase font-bold">Live Monitoring</span>
                 </div>
                 <div id="messages-list" class="divide-y divide-slate-800">
-                    <!-- Messages appear here -->
                     <div class="p-8 text-center text-slate-500">
                         <i class="fas fa-inbox text-4xl mb-3 opacity-20"></i>
                         <p>Waiting for incoming emails...</p>
@@ -94,7 +112,7 @@
                         <li><i class="fas fa-check text-sky-400 mr-2"></i> 24h Message Retention</li>
                         <li><i class="fas fa-check text-sky-400 mr-2"></i> Ad-Free Experience</li>
                     </ul>
-                    <a href="https://discord.gg/5ZDX8dp7" class="w-full py-3 rounded-xl border border-slate-700 hover:bg-slate-800 text-center font-bold transition">Purchase</a>
+                    <button onclick="openModal()" class="w-full py-3 rounded-xl border border-slate-700 hover:bg-slate-800 text-center font-bold transition">Purchase</button>
                 </div>
 
                 <!-- Tier 2 -->
@@ -108,7 +126,7 @@
                         <li><i class="fas fa-check text-sky-400 mr-2"></i> 48h Message Retention</li>
                         <li><i class="fas fa-check text-sky-400 mr-2"></i> Custom Username</li>
                     </ul>
-                    <a href="https://discord.gg/5ZDX8dp7" class="w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-600 text-center font-bold transition">Purchase</a>
+                    <button onclick="openModal()" class="w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-600 text-center font-bold transition">Purchase</button>
                 </div>
 
                 <!-- Tier 3 -->
@@ -121,7 +139,7 @@
                         <li><i class="fas fa-check text-sky-400 mr-2"></i> 1 Week Retention</li>
                         <li><i class="fas fa-check text-sky-400 mr-2"></i> Private Domains</li>
                     </ul>
-                    <a href="https://discord.gg/5ZDX8dp7" class="w-full py-3 rounded-xl border border-slate-700 hover:bg-slate-800 text-center font-bold transition">Purchase</a>
+                    <button onclick="openModal()" class="w-full py-3 rounded-xl border border-slate-700 hover:bg-slate-800 text-center font-bold transition">Purchase</button>
                 </div>
 
                 <!-- Tier 4 -->
@@ -135,7 +153,7 @@
                         <li><i class="fas fa-check text-indigo-400 mr-2"></i> API Access (Full)</li>
                         <li><i class="fas fa-check text-indigo-400 mr-2"></i> Priority Support</li>
                     </ul>
-                    <a href="https://discord.gg/5ZDX8dp7" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-center font-bold transition">Purchase</a>
+                    <button onclick="openModal()" class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-center font-bold transition">Purchase</button>
                 </div>
             </div>
         </div>
@@ -170,7 +188,7 @@
                     <i class="fab fa-discord text-5xl text-[#5865F2] mb-4"></i>
                     <h4 class="font-bold mb-2">Join our Discord</h4>
                     <p class="text-sm text-slate-400 mb-6">Get support, check status, and talk to the community.</p>
-                    <a href="https://discord.gg/5ZDX8dp7" target="_blank" class="block w-full py-3 bg-[#5865F2] hover:bg-[#4752c4] rounded-xl font-bold transition">Join Server</a>
+                    <button onclick="openModal()" class="block w-full py-3 bg-[#5865F2] hover:bg-[#4752c4] rounded-xl font-bold transition">Join Server</button>
                 </div>
                 <div class="mt-6 flex justify-center space-x-4">
                     <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center hover:text-sky-400 transition"><i class="fab fa-twitter"></i></a>
@@ -199,17 +217,34 @@
         let token = null;
         let checkInterval = null;
 
+        // Modal Functions
+        function openModal() {
+            const modal = document.getElementById('redirect-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.firstElementChild.classList.add('modal-active');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('redirect-modal');
+            modal.firstElementChild.classList.remove('modal-active');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 200);
+        }
+
         async function generateNewEmail() {
             try {
                 const emailDisplay = document.getElementById('email-display');
                 emailDisplay.value = "Creating...";
                 
-                // 1. Get Domains
                 const domainRes = await fetch(`${API_URL}/domains`);
                 const domainData = await domainRes.json();
                 const domain = domainData['hydra:member'][0].domain;
 
-                // 2. Create Account
                 const address = `${Math.random().toString(36).substring(2, 10)}@${domain}`;
                 const password = Math.random().toString(36).substring(2, 15);
 
@@ -222,7 +257,6 @@
                 if (!accountRes.ok) throw new Error('Failed to create account');
                 currentAccount = await accountRes.json();
 
-                // 3. Get Token
                 const tokenRes = await fetch(`${API_URL}/token`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -233,14 +267,12 @@
 
                 emailDisplay.value = address;
                 
-                // Reset UI
                 document.getElementById('messages-list').innerHTML = `
                     <div class="p-8 text-center text-slate-500">
                         <i class="fas fa-spinner fa-spin text-4xl mb-3 opacity-20"></i>
                         <p>Listening for new messages...</p>
                     </div>`;
 
-                // Start Polling
                 if (checkInterval) clearInterval(checkInterval);
                 checkInterval = setInterval(fetchMessages, 5000);
 
@@ -299,7 +331,6 @@
             }, 2000);
         }
 
-        // Initialize on load
         window.onload = generateNewEmail;
     </script>
 </body>
