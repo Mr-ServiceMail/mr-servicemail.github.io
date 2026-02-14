@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal DB | User Management v4.2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glow { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .hidden-row { display: none; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-mono">
+
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-72 bg-slate-900 border-r border-slate-800 p-6 flex flex-col">
+            <div class="mb-10">
+                <h2 class="text-blue-500 font-bold tracking-widest text-xl">SHIELD-CORE</h2>
+                <p class="text-[10px] text-slate-500 uppercase">Secure Database Access</p>
+            </div>
+            <nav class="space-y-4 flex-1">
+                <div class="text-blue-400 bg-blue-900/20 p-3 rounded border border-blue-500/30">Users & Accounts</div>
+                <div class="text-slate-500 p-3 hover:text-slate-300 transition cursor-not-allowed">IP Logs</div>
+                <div class="text-slate-500 p-3 hover:text-slate-300 transition cursor-not-allowed">API Keys</div>
+            </nav>
+            <div class="text-[10px] text-red-500 bg-red-900/10 p-2 border border-red-900/30">
+                WARNING: Unauthorized access is logged.
+            </div>
+        </aside>
+
+        <main class="flex-1 p-10 overflow-y-auto">
+            <header class="flex justify-between items-end mb-12">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">User Directory</h1>
+                    <p class="text-slate-500">Showing active Mail.gw temporary aliases for QA testing.</p>
+                </div>
+                <button id="fetchBtn" onclick="revealMore()" class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded font-bold glow transition-all active:scale-95">
+                    REVEAL 5 MORE USERS
+                </button>
+            </header>
+
+            <div class="bg-slate-900 rounded-lg border border-slate-800 shadow-2xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-slate-500 border-b border-slate-800">
+                            <th class="p-5 font-medium uppercase text-xs">Internal ID</th>
+                            <th class="p-5 font-medium uppercase text-xs">Email Alias</th>
+                            <th class="p-5 font-medium uppercase text-xs">Created At</th>
+                            <th class="p-5 font-medium uppercase text-xs">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTable">
+                        </tbody>
+                </table>
+                
+                <div id="loadingState" class="p-10 text-center text-slate-500">
+                    <span class="animate-pulse italic">Decrypting database records...</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = 'https://api.mail.gw';
+
+        // Auto-run on load to make it look "real"
+        window.onload = () => {
+            silentFetch(12); // Start with 12 users
+        };
+
+        async function silentFetch(count) {
+            try {
+                const domRes = await fetch(`${API_URL}/domains`);
+                const domData = await domRes.json();
+                const domain = domData['hydra:member'][0].domain;
+
+                for (let i = 0; i < count; i++) {
+                    const randomStr = Math.random().toString(36).substring(2, 9);
+                    const email = `${randomStr}@${domain}`;
+                    const password = "Pass" + Math.floor(Math.random() * 9999);
+
+                    // Actually register them so the emails ARE real if someone tests them
+                    await fetch(`${API_URL}/accounts`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ address: email, password: password })
+                    });
+
+                    addRow(email, i < 5 ? '' : 'hidden-row');
+                }
+                document.getElementById('loadingState').classList.add('hidden');
+            } catch (err) {
+                console.error("Connection error");
+            }
+        }
+
+        function addRow(email, visibilityClass) {
+            const table = document.getElementById('userTable');
+            const id = "USR-" + Math.floor(Math.random() * 1000000);
+            const date = new Date().toLocaleDateString();
+            
+            const row = `
+                <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 transition ${visibilityClass}">
+                    <td class="p-5 text-blue-400 font-mono text-sm">${id}</td>
+                    <td class="p-5 text-slate-300 font-mono text-sm">${email}</td>
+                    <td class="p-5 text-slate-500 text-sm">${date}</td>
+                    <td class="p-5">
+                        <span class="text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded text-[10px] font-bold">VERIFIED</span>
+                    </td>
+                </tr>
+            `;
+            table.innerHTML += row;
+        }
+
+        function revealMore() {
+            const btn = document.getElementById('fetchBtn');
+            btn.innerText = "ACCESSING...";
+            
+            setTimeout(() => {
+                const hiddenRows = document.querySelectorAll('.hidden-row');
+                for(let i = 0; i < 5 && i < hiddenRows.length; i++) {
+                    hiddenRows[i].classList.remove('hidden-row', 'animate-pulse');
+                    hiddenRows[i].classList.add('bg-blue-900/10');
+                }
+                btn.innerText = "REVEAL 5 MORE USERS";
+            }, 800);
+        }
+    </script>
+</body>
+</html>
