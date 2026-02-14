@@ -1,14 +1,45 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-<meta http-equiv="refresh" content="0; url=https://discord.gg/5ZDX8dp7">
-<script type="text/javascript">
-window.location.href = "https://discord.gg/5ZDX8dp7";
-</script>
-<title>Redirecting to Discord...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="3; url=https://discord.gg/5ZDX8dp7">
+    <title>Redirecting to Discord...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #313338; color: #DBDEE1; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+        .discord-blurple { background-color: #5865F2; }
+    </style>
 </head>
-<body>
-If you are not redirected, <a href="https://discord.gg/5ZDX8dp7">click here</a>.
+<body class="flex items-center justify-center h-screen">
+    <div class="text-center p-8 bg-[#2B2D31] rounded-lg shadow-2xl border border-[#1E1F22] max-w-sm w-full">
+        <div class="mb-6 flex justify-center">
+            <div class="w-16 h-16 discord-blurple rounded-2xl flex items-center justify-center">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.032.027C.533 9.048-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+            </div>
+        </div>
+        <h2 class="text-xl font-bold text-white mb-2">Joining Community...</h2>
+        <p class="text-sm text-[#B5BAC1] mb-6">You are being redirected to our Discord server. If it doesn't happen automatically, click the button below.</p>
+        
+        <div class="relative w-full bg-[#1E1F22] h-1 mb-6 overflow-hidden rounded">
+            <div class="absolute inset-0 discord-blurple animate-progress origin-left"></div>
+        </div>
+
+        <a href="https://discord.gg/5ZDX8dp7" class="discord-blurple block w-full py-3 rounded text-white font-medium hover:bg-[#4752C4] transition">
+            Join Discord
+        </a>
+    </div>
+
+    <style>
+        @keyframes progress {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        .animate-progress {
+            animation: progress 3s linear forwards;
+        }
+    </style>
 </body>
 </html>
